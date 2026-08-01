@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katy - Sistema Profissional Definitivo</title>
+    <style>
+        :root {
+            --bg-page: #080808;
+            --card-bg: #141414;
+            --text-main: #f0f0f0;
+            --gold: #d4af37;
+            --gold-hover: #b39230;
+            --border: #262626;
+            --danger: #ff5252;
+            --success: #4caf50;
+            --warning: #ffb74d;
+            --info: #1877F2;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            margin: 0;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border-bottom: 3px solid var(--gold);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 { margin: 0; font-size: 28px; color: white; letter-spacing: 2px; }
+
+        .fb-sync-panel {
+            background: linear-gradient(135deg, #102a45, #111);
+            border: 2px solid var(--info);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .fb-info h3 { color: var(--info); margin: 0 0 5px 0; font-size: 18px; }
+        .fb-info p { margin: 0; font-size: 13px; color: #ccc; }
+
+        .fb-input-box {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .fb-input-box input {
+            flex: 1;
+            padding: 12px;
+            background-color: #222;
+            border: 1px solid var(--info);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .fb-connect-btn {
+            background-color: var(--info);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .fb-connect-btn:hover { background-color: #165fe6; }
+
+        .robo-panel {
+            background: linear-gradient(135deg, #1c1c1c, #111);
+            border: 2px solid var(--gold);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+        .robo-panel h3 { color: var(--gold); margin-top: 0; font-size: 18px; }
+        .robo-input-group { display: flex; gap: 10px; margin-top: 10px; }
+        .robo-input-group input {
+            flex: 1; padding: 14px; background-color: #222; border: 1px solid var(--gold); border-radius: 8px; color: white; font-size: 15px;
+        }
+        .robo-input-group button {
+            background-color: var(--gold); color: #000; border: none; padding: 0 30px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px;
+        }
+        .robo-log { margin-top: 8px; font-size: 13px; color: #e2cb6b; font-weight: 500; }
+
+        /* Estilos para os botões de adicionar manualmente */
+        .add-manual-box {
+            background: #1b1b1b;
+            border: 1px dashed var(--gold);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .add-manual-box input {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px;
+            background-color: #222;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: white;
+        }
+        .add-manual-box button {
+            background-color: var(--gold);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            margin-bottom: 25px;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            color: #888;
+            border: 1px solid var(--border);
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            white-space: nowrap;
+            flex: 1;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active { background-color: var(--gold); color: #000; border-color: var(--gold); }
+        .tab-btn.tab-live { border-color: var(--info); color: var(--info); }
+        .tab-btn.tab-live.active { background-color: var(--info); color: white; }
+        .tab-btn.tab-lixeira { border-color: var(--danger); color: #ff8a80; }
+        .tab-btn.tab-lixeira.active { background-color: var(--danger); color: white; }
+
+        .page-section {
+            display: none;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+        }
+        .page-section.active { display: block; }
+
+        h2 { color: var(--gold); font-size: 22px; margin-top: 0; border-left: 4px solid var(--gold); padding-left: 12px; margin-bottom: 20px; }
+
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border); font-size: 15px; }
+        th { color: #888; text-transform: uppercase; font-size: 13px; }
+
+        .badge-pago { color: var(--success); font-weight: bold; }
+        .badge-nao { color: var(--danger); font-weight: bold; }
+        .badge-guardar { color: #ffa726; font-weight: bold; }
+        .badge-live { color: var(--info); font-weight: bold; background: rgba(24, 119, 242, 0.1); padding: 4px 8px; border-radius: 4px; }
+
+        .btn-action-lixeira {
+            background-color: #331111; color: #ff8a80; border: 1px solid var(--danger); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;
+        }
+        .btn-delete { background: transparent; color: var(--danger); border: none; cursor: pointer; font-size: 18px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>KATY - MÁQUINA DE GESTÃO PROFISSIONAL</h1>
+    </header>
+
+    <div class="fb-sync-panel">
+        <div class="fb-info" style="width: 100%;">
+            <h3>🔵 Ligar à Página de Facebook</h3>
+            <p>Insira o link da página de Facebook e clique no botão para abrir diretamente:</p>
+            <div class="fb-input-box">
+                <input type="text" id="linkFacebook" placeholder="Cole aqui o link do Facebook">
+                <a href="#" id="botaoLinkFb" target="_blank" class="fb-connect-btn" onclick="atualizarLinkFb(event)">Abrir Página do Facebook</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="robo-panel">
+        <h3>🤖 Robô Inteligente de Comandos</h3>
+        <p style="font-size: 13px; color: #ccc; margin-top: 0; margin-bottom: 6px;">
+            Escreva o que quiser ou use os botões manuais abaixo para adicionar stocks e encomendas diretamente:
+        </p>
+        <div class="robo-input-group">
+            <input type="text" id="comandoRobo" placeholder="Escreva aqui a ordem para o robô..." onkeypress="if(event.key === 'Enter') processarComando()">
+            <button onclick="processarComando()">Executar Robô</button>
+        </div>
+        <div class="robo-log" id="roboLog">Robô a funcionar a 100%...</div>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" id="btn-1" onclick="mudarPagina(1)">1. Armazém</button>
+        <button class="tab-btn" id="btn-2" onclick="mudarPagina(2)">2. Loja</button>
+        <button class="tab-btn" id="btn-3" onclick="mudarPagina(3)">3. Clientes</button>
+        <button class="tab-btn" id="btn-4" onclick="mudarPagina(4)">4. Desistências</button>
+        <button class="tab-btn tab-live" id="btn-5" onclick="mudarPagina(5)">🔴 Live Facebook</button>
+        <button class="tab-btn" id="btn-6" onclick="mudarPagina(6)">⏱️ Tempos</button>
+        <button class="tab-btn" id="btn-7" onclick="mudarPagina(7)">📅 Dias</button>
+        <button class="tab-btn tab-lixeira" id="btn-8" onclick="mudarPagina(8)">🗑️ Lixeira</button>
+    </div>
+
+    <!-- PÁGINA 1: ARMAZÉM -->
+    <div id="pagina-1" class="page-section active">
+        <h2>Stock de Armazém</h2>
+        <div class="add-manual-box">
+            <input type="text" id="nomeArmazem" placeholder="Nome do Artigo">
+            <input type="number" id="qtdArmazem" placeholder="Quantidade">
+            <input type="number" step="0.01" id="precoArmazem" placeholder="Preço (€)">
+            <button onclick="adicionarArmazemManual()">Adicionar ao Armazém</button>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Artigo</th><th>Quantidade</th><th>Preço</th><th>Ação</th></tr></thead>
+                <tbody id="tabela-armazem"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PÁGINA 2: LOJA -->
+    <div id="pagina-2" class="page-section">
+        <h2>Stock da Loja Física</h2>
+        <div class="add-manual-box">
+            <input type="text" id="nomeLoja" placeholder="Nome do Artigo">
+            <input type="number" id="qtdLoja" placeholder="Quantidade">
+            <input type="number" step="0.01" id="precoLoja" placeholder="Preço (€)">
+            <button onclick="adicionarLojaManual()">Adicionar à Loja</button>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Artigo</th><th>Quantidade</th><th>Preço</th><th>Ação</th></tr></thead>
+                <tbody id="tabela-loja"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="pagina-3" class="page-section">
+        <h2>Controlo de Clientes</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Cliente</th><th>Artigo</th><th>Total</th><th>Estado</th><th>Ações</th></tr></thead>
+                <tbody id="tabela-clientes"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="pagina-4" class="page-section">
+        <h2>Desistências & Dados de Pagamento</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Cliente</th><th>Motivo</th><th>Valor</th><th>Dados MB WAY / IBAN</th></tr></thead>
+                <tbody id="tabela-desistencias"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="pagina-5" class="page-section">
+        <h2>🔴 Pedidos Automáticos da Live do Facebook</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Produto</th><th>Preço</th><th>Cliente</th><th>Dia da Live</th></tr></thead>
+                <tbody id="tabela-live"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="pagina-6" class="page-section">
+        <h2>⏱️ Tempos de Pagamento</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Cliente</th><th>Artigo</th><th>Tempo de Pagamento</th><th>Avaliação</th></tr></thead>
+                <tbody id="tabela-tempo"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="pagina-7" class="page-section">
+        <h2>📅 Encomendas por Dias da Semana</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Cliente</th><th>Artigo</th><th>Dia</th><th>Estado</th></tr></thead>
+                <tbody id="tabela-dias"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="pagina-8" class="page-section">
+        <h2 style="color: var(--danger);">🗑️ Lixeira de Clientes</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Cliente</th><th>Artigo</th><th>Total</th><th>Estado Anterior</th><th>Ações</th></tr></thead>
+                <tbody id="tabela-lixeira"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    let armazem = JSON.parse(localStorage.getItem('katy_puro_arm')) || [];
+    let loja = JSON.parse(localStorage.getItem('katy_puro_loja')) || [];
+    let clientes = JSON.parse(localStorage.getItem('katy_puro_cli')) || [];
+    let desistencias = JSON.parse(localStorage.getItem('katy_puro_des')) || [];
+    let livePedidos = JSON.parse(localStorage.getItem('katy_puro_live')) || [];
+    let tempos = JSON.parse(localStorage.getItem('katy_puro_tempo')) || [];
+    let diasSemana = JSON.parse(localStorage.getItem('katy_puro_dias')) || [];
+    let lixeira = JSON.parse(localStorage.getItem('katy_puro_lixo')) || [];
+
+    let linkSalvo = localStorage.getItem('katy_link_fb') || '';
+    if(linkSalvo) {
+        document.getElementById('linkFacebook').value = linkSalvo;
+        document.getElementById('botaoLinkFb').href = linkSalvo;
+    }
+
+    function atualizarLinkFb(e) {
+        let inputVal = document.getElementById('linkFacebook').value.trim();
+        if(!inputVal) {
+            e.preventDefault();
+            alert("Por favor, insira o link da página de Facebook primeiro.");
+            return;
+        }
+        localStorage.setItem('katy_link_fb', inputVal);
+        document.getElementById('botaoLinkFb').href = inputVal;
+    }
+
+    function mudarPagina(num) {
+        document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        let sec = document.getElementById('pagina-' + num);
+        let btn = document.getElementById('btn-' + num);
+        
+        if(sec) sec.classList.add('active');
+        if(btn) btn.classList.add('active');
+    }
+
+    function salvarTudo() {
+        localStorage.setItem('katy_puro_arm', JSON.stringify(armazem));
+        localStorage.setItem('katy_puro_loja', JSON.stringify(loja));
+        localStorage.setItem('katy_puro_cli', JSON.stringify(clientes));
+        localStorage.setItem('katy_puro_des', JSON.stringify(desistencias));
+        localStorage.setItem('katy_puro_live', JSON.stringify(livePedidos));
+        localStorage.setItem('katy_puro_tempo', JSON.stringify(tempos));
+        localStorage.setItem('katy_puro_dias', JSON.stringify(diasSemana));
+        localStorage.setItem('katy_puro_lixo', JSON.stringify(lixeira));
+        renderizar();
+    }
+
+    // ADICIONAR MANUALMENTE AO ARMAZÉM
+    function adicionarArmazemManual() {
+        let nome = document.getElementById('nomeArmazem').value.trim();
+        let qtd = parseInt(document.getElementById('qtdArmazem').value);
+        let preco = parseFloat(document.getElementById('precoArmazem').value);
+
+        if(!nome || isNaN(qtd) || isNaN(preco)) {
+            alert("Preencha todos os campos do armazém corretamente.");
+            return;
+        }
+
+        armazem.push({ nome, qtd, preco });
+        salvarTudo();
+        document.getElementById('nomeArmazem').value = '';
+        document.getElementById('qtdArmazem').value = '';
+        document.getElementById('precoArmazem').value = '';
+        alert("Artigo adicionado ao Armazém com sucesso!");
+    }
+
+    // ADICIONAR MANUALMENTE À LOJA
+    function adicionarLojaManual() {
+        let nome = document.getElementById('nomeLoja').value.trim();
+        let qtd = parseInt(document.getElementById('qtdLoja').value);
+        let preco = parseFloat(document.getElementById('precoLoja').value);
+
+        if(!nome || isNaN(qtd) || isNaN(preco)) {
+            alert("Preencha todos os campos da loja corretamente.");
+            return;
+        }
+
+        loja.push({ nome, qtd, preco });
+        salvarTudo();
+        document.getElementById('nomeLoja').value = '';
+        document.getElementById('qtdLoja').value = '';
+        document.getElementById('precoLoja').value = '';
+        alert("Artigo adicionado à Loja com sucesso!");
+    }
+
+    function enviarParaLixeira(index) {
+        let clienteRemovido = clientes.splice(index, 1)[0];
+        lixeira.push(clienteRemovido);
+        salvarTudo();
+    }
+
+    function restaurarCliente(index) {
+        let clienteRestaurado = lixeira.splice(index, 1)[0];
+        clientes.push(clienteRestaurado);
+        salvarTudo();
+    }
+
+    function apagarDefinitivo(index) {
+        if(confirm("Apagar para sempre?")) {
+            lixeira.splice(index, 1);
+            salvarTudo();
+        }
+    }
+
+    function processarComando() {
+        let texto = document.getElementById('comandoRobo').value.trim();
+        let log = document.getElementById('roboLog');
+        if(!texto) return;
+        let lower = texto.toLowerCase();
+
+        if (lower.startsWith('lixo') || lower.startsWith('apagar')) {
+            let nomeBusca = texto.replace(/lixo/gi, '').replace(/apagar/gi, '').trim().toLowerCase();
+            let idx = clientes.findIndex(c => c.nome.toLowerCase().includes(nomeBusca));
+            if (idx !== -1) {
+                enviarParaLixeira(idx);
+                mudarPagina(8);
+                log.innerHTML = `🗑️ Robô enviou "${nomeBusca}" para a Lixeira!`;
+                document.getElementById('comandoRobo').value = '';
+                return;
+            }
+        }
+
+        if (lower.includes('desistência') || lower.includes('desistencia')) {
+            let nums = texto.match(/\d+([.,]\d+)?/g);
+            let palavras = texto.replace(/desist[êe]ncia/gi, '').replace(/\d+([.,]\d+)?/g, '').replace(/euros?/gi, '').replace(/€/gi, '').trim();
+            if(nums && nums.length >= 1) {
+                let valor = parseFloat(nums[0].replace(',', '.'));
+                desistencias.push({ nome: palavras || "Cliente", motivo: "Desistência", valor, dados: texto });
+                salvarTudo();
+                mudarPagina(4);
+                log.innerHTML = `✅ Robô registou a Desistência!`;
+                document.getElementById('comandoRobo').value = '';
+                return;
+            }
+        }
+
+        if (lower.includes('arm')) {
+            let nums = texto.match(/\d+([.,]\d+)?/g);
+            if(nums && nums.length >= 2) {
+                let qtd = parseInt(nums[0]);
+                let preco = parseFloat(nums[1].replace(',', '.'));
+                let nome = texto.replace(/armaz[ée]m?/gi, '').replace(/armz/gi, '').replace(/\d+([.,]\d+)?/g, '').replace(/unidades?/gi, '').replace(/euros?/gi, '').replace(/€/gi, '').trim() || "Artigo Armazém";
+                armazem.push({ nome, qtd, preco });
+                salvarTudo();
+                mudarPagina(1);
+                log.innerHTML = `✅ Adicionado "${nome}" ao Armazém!`;
+                document.getElementById('comandoRobo').value = '';
+                return;
+            }
+        }
+
+        if (lower.includes('loja')) {
+            let nums = texto.match(/\d+([.,]\d+)?/g);
+            if(nums && nums.length >= 2) {
+                let qtd = parseInt(nums[0]);
+                let preco = parseFloat(nums[1].replace(',', '.'));
+                let nome = texto.replace(/loja/gi, '').replace(/\d+([.,]\d+)?/g, '').replace(/unidades?/gi, '').replace(/euros?/gi, '').replace(/€/gi, '').trim() || "Artigo Loja";
+                loja.push({ nome, qtd, preco });
+                salvarTudo();
+                mudarPagina(2);
+                log.innerHTML = `✅ Adicionado "${nome}" à Loja Física!`;
+                document.getElementById('comandoRobo').value = '';
+                return;
+            }
+        }
+
+        let nums = texto.match(/\d+([.,]\d+)?/g);
+        if (nums && nums.length >= 1) {
+            let estado = 'Pago';
+            if (lower.includes('não') || lower.includes('nao') || lower.includes('devendo')) estado = 'Não Paga';
+            else if (lower.includes('guardar') || lower.includes('deixa')) estado = 'Deixa Guardar';
+
+            let diaEncontrado = "Terça-feira";
+            if (lower.includes('quinta')) diaEncontrado = "Quinta-feira";
+            if (lower.includes('domingo')) diaEncontrado = "Domingo";
+            if (lower.includes('segunda')) diaEncontrado = "Segunda-feira";
+
+            let tempoStr = "";
+            if (lower.includes('dia')) tempoStr = (texto.match(/\d+\s*dias?/i) || ["Vários dias"])[0];
+            else if (lower.includes('semana')) tempoStr = (texto.match(/\d+\s*semanas?/i) || ["Várias semanas"])[0];
+            else if (lower.includes('mês') || lower.includes('mes')) tempoStr = (texto.match(/\d+\s*mes(es)?/i) || ["Vários meses"])[0];
+
+            let valor = parseFloat(nums[nums.length - 1].replace(',', '.'));
+            let limpo = texto.replace(/cliente/gi, '').replace(/pago/gi, '').replace(/n[ãa]o/gi, '').replace(/devendo/gi, '').replace(/guardar/gi, '').replace(/deixa/gi, '').replace(/terça/gi, '').replace(/terca/gi, '').replace(/quinta/gi, '').replace(/domingo/gi, '').replace(/segunda/gi, '').replace(/euros?/gi, '').replace(/€/gi, '').replace(nums[nums.length - 1], '').trim();
+            
+            let partes = limpo.split('comprou');
+            let nomeCliente = partes[0].trim() || "Cliente";
+            let artigoComprado = partes[1] ? partes[1].trim() : (limpo.replace(nomeCliente, '').trim() || "Encomenda");
+
+            clientes.push({ nome: nomeCliente, artigo: artigoComprado, total: valor, estado });
+            diasSemana.push({ nome: nomeCliente, artigo: artigoComprado, dia: diaEncontrado, estado });
+
+            if (tempoStr) {
+                let aval = "🟢 Bom Pagador";
+                if (lower.includes('semana') || lower.includes('mês')) aval = "🟡 Demora Algum Tempo";
+                tempos.push({ nome: nomeCliente, artigo: artigoComprado, tempo: tempoStr, aval });
+            }
+
+            salvarTudo();
+            mudarPagina(3);
+            log.innerHTML = `✅ Robô registou o cliente "${nomeCliente}" com sucesso!`;
+            document.getElementById('comandoRobo').value = '';
+            return;
+        }
+
+        log.innerHTML = `⚠️ Ordem não reconhecida. Tente escrever com nome e valores.`;
+    }
+
+    function remover(tipo, index) {
+        if(tipo === 'armazem') armazem.splice(index, 1);
+        if(tipo === 'loja') loja.splice(index, 1);
+        salvarTudo();
+    }
+
+    function renderizar() {
+        document.getElementById('tabela-armazem').innerHTML = armazem.map((i, idx) => `
+            <tr><td><b>${i.nome}</b></td><td>${i.qtd} un.</td><td>${i.preco.toFixed(2)} €</td><td><button class="btn-delete" onclick="remover('armazem', ${idx})">&times;</button></td></tr>
+        `).join('');
+
+        document.getElementById('tabela-loja').innerHTML = loja.map((i, idx) => `
+            <tr><td><b>${i.nome}</b></td><td>${i.qtd} un.</td><td>${i.preco.toFixed(2)} €</td><td><button class="btn-delete" onclick="remover('loja', ${idx})">&times;</button></td></tr>
+        `).join('');
+
+        document.getElementById('tabela-clientes').innerHTML = clientes.map((c, idx) => {
+            let classeEstado = c.estado === 'Não Paga' ? 'badge-nao' : (c.estado === 'Deixa Guardar' ? 'badge-guardar' : 'badge-pago');
+            return `
+                <tr>
+                    <td><b>${c.nome}</b></td>
+                    <td>${c.artigo}</td>
+                    <td>${c.total.toFixed(2)} €</td>
+                    <td class="${classeEstado}">${c.estado}</td>
+                    <td><button class="btn-action-lixeira" onclick="enviarParaLixeira(${idx})">🗑️ Para o Lixo</button></td>
+                </tr>
+            `;
+        }).join('');
+
+        document.getElementById('tabela-desistencias').innerHTML = desistencias.map((d, idx) => `
+            <tr><td><b>${d.nome}</b></td><td>${d.motivo}</td><td>${d.valor.toFixed(2)} €</td><td>${d.dados}</td></tr>
+        `).join('');
+
+        document.getElementById('tabela-live').innerHTML = livePedidos.map((p, idx) => `
+            <tr>
+                <td><b>${p.produto}</b></td>
+                <td style="color:var(--success); font-weight:bold;">${p.preco.toFixed(2)} €</td>
+                <td>${p.cliente}</td>
+                <td><span class="badge-live">📅 ${p.dia}</span></td>
+            </tr>
+        `).join('');
+
+        document.getElementById('tabela-tempo').innerHTML = tempos.map((t, idx) => `
+            <tr><td><b>${t.nome}</b></td><td><b>${t.artigo}</b></td><td style="color:var(--warning); font-weight:bold;">⏱️ ${t.tempo}</td><td>${t.aval}</td></tr>
+        `).join('');
+
+        document.getElementById('tabela-dias').innerHTML = diasSemana.map((ds, idx) => {
+            let classeEstado = ds.estado === 'Não Paga' ? 'badge-nao' : 'badge-pago';
+            return `
+                <tr>
+                    <td><b>${ds.nome}</b></td>
+                    <td><b>${ds.artigo}</b></td>
+                    <td><span class="badge-live">📅 ${ds.dia}</span></td>
+                    <td class="${classeEstado}">${ds.estado}</td>
+                </tr>
+            `;
+        }).join('');
+
+        document.getElementById('tabela-lixeira').innerHTML = lixeira.map((l, idx) => `
+            <tr>
+                <td><b>${l.nome}</b></td>
+                <td><b>${l.artigo}</b></td>
+                <td>${l.total.toFixed(2)} €</td>
+                <td>${l.estado}</td>
+                <td>
+                    <button class="db-btn" style="padding: 6px 12px; font-size: 13px;" onclick="restaurarCliente(${idx})">♻️ Restaurar</button>
+                    <button class="btn-delete" style="margin-left: 10px;" onclick="apagarDefinitivo(${idx})">❌ Apagar</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    renderizar();
+</script>
+
+</body>
+</html>
